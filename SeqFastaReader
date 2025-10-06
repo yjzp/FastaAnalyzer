@@ -60,7 +60,7 @@ class FastaReader:
 
 
 if __name__ == "__main__":
-    reader = FastaReader("test.fasta.txt")
+    reader = FastaReader("test.fasta")
     if not reader.is_fasta():
         print("Файл не в формате fasta")
     else:
