@@ -1,0 +1,70 @@
+class Seq:
+    def __init__(self, sequence, header):
+        self.sequence = sequence
+        self.header = header.strip()
+
+    def __str__(self):
+        return ">" + self.header + "\n" + self.sequence
+
+    def length(self):
+        return len(self.sequence)
+
+    def alphabet(self):
+        seq = self.sequence.upper()
+        prot_letters = "ACDEFGHIKLMNPQRSTVWY"
+        nuc_letters = "ACGTU"
+        # проверка на нуклеотиды
+        is_nuc = True
+        for letter in seq:
+            if letter not in nuc_letters:
+                is_nuc = False
+                break
+        # если не нуклеотид, проверяем белки
+        if is_nuc:
+            return "нуклеотидный"
+        for letter in seq:
+            if letter in prot_letters:
+                return "белковый"
+        return "неизвестный"
+
+
+class FastaReader:
+    def __init__(self, filename):
+        self.filename = filename
+
+    def is_fasta(self):
+        f = open(self.filename, "r")
+        first_line = f.readline()
+        f.close()
+        if first_line.startswith(">"):
+            return True
+        else:
+            return False
+
+    def read(self):
+        f = open(self.filename, "r")
+        header = ""
+        seq = ""
+        for line in f:
+            line = line.strip()
+            if line.startswith(">"):
+                if header != "":
+                    yield Seq(seq, header)
+                header = line[1:]
+                seq = ""
+            else:
+                seq += line
+        if header != "":
+            yield Seq(seq, header)
+        f.close()
+
+
+if __name__ == "__main__":
+    reader = FastaReader("test.fasta.txt")
+    if not reader.is_fasta():
+        print("Файл не в формате fasta")
+    else:
+        for seq_obj in reader.read():
+            print(seq_obj)
+            print("Длина:", seq_obj.length())
+            print("Алфавит:", seq_obj.alphabet())
