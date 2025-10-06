@@ -1,0 +1,14 @@
+>sequence_with_invalid_chars
+ATGCXYZQWERUIOPASDFGHJKLZXCVBNM
+
+>empty_sequence_following
+
+
+>sequence_with_numbers
+ATGC123456789ATGC
+
+>sequence_with_spaces
+ATGC ATGC ATGC
+
+>normal_sequence_for_comparison
+ATGCGATCGTAGCTAGC
